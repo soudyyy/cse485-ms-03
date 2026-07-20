@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 session_start();
 
 // da login roi thi ve dashboard
@@ -38,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <h2>Dang nhap MiniShop</h2>
     <?php if ($error !== ''): ?>
-        <p class="error"><?php echo $error; ?></p>
+        <p class="error"><?php echo htmlspecialchars($error); ?></p>
     <?php endif; ?>
     <form method="post" action="login.php">
         <p>

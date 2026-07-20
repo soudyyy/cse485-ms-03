@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 session_start();
 
 // guard: chua login thi ve login
@@ -101,7 +103,7 @@ function renderProductRows(array $products, array $categoryMap): void {
 </head>
 <body>
 
-<h2>Xin chao, <?php echo $_SESSION['username']; ?></h2>
+<h2>Xin chao, <?php echo htmlspecialchars($_SESSION['username']); ?></h2>
 <p>
     <a href="dashboard.php">Tat ca</a>
     <a href="?category_id=1">Ban phim</a>
@@ -201,6 +203,5 @@ function renderProductRows(array $products, array $categoryMap): void {
 </table>
 <?php endif; ?>
 
-<!-- MS_EXPECT inventory_value=41380000 rank=Lon -->
 </body>
 </html>
