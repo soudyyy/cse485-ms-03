@@ -77,3 +77,26 @@ function countByCategoryObjects(array $products, int $categoryId): int {
     }
     return $dem;
 }
+
+// tinh tong gia tri cac san pham thuoc 1 danh muc (dung method lineTotal())
+function sumValueByCategoryObjects(array $products, int $categoryId): int {
+    $tong = 0;
+    $soPhanTu = count($products);
+    for ($i = 0; $i < $soPhanTu; $i++) {
+        if ($products[$i]->categoryId == $categoryId) {
+            $tong = $tong + $products[$i]->lineTotal();
+        }
+    }
+    return $tong;
+}
+
+// tim 1 san pham theo sku 
+function findProductBySku(array $products, string $sku): ?Product {
+    $soPhanTu = count($products);
+    for ($i = 0; $i < $soPhanTu; $i++) {
+        if ($products[$i]->sku === $sku) {
+            return $products[$i];
+        }
+    }
+    return null;
+}

@@ -16,7 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'order
     $sku = trim($_POST['sku'] ?? '');
     $qty = (int)($_POST['qty'] ?? 0);
 
-    if ($sku !== '' && $qty > 0) {
+    // chi luu don khi sku ton tai that trong danh sach san pham
+    $spDat = findProductBySku($productObjects, $sku);
+
+    if ($spDat !== null && $qty > 0) {
         if (!isset($_SESSION['orders'])) {
             $_SESSION['orders'] = array();
         }
@@ -43,26 +46,14 @@ $dsHienThi = filterByCategoryObjects($productObjects, $catId);
 $tongKho = inventoryValueFromObjects($productObjects);
 $hangKho = rankInventory($tongKho);
 
-// Tinh tong gia tri tung danh muc xuat bao cao
-$tongBanPhim = 0;
-$tongChuot = 0;
-$tongManHinh = 0;
-
+// Tinh tong gia tri tung danh muc xuat bao cao (dung ham dung chung o data.php, khong lap tay o view)
 $soLuongBanPhim = countByCategoryObjects($productObjects, 1);
 $soLuongChuot = countByCategoryObjects($productObjects, 2);
 $soLuongManHinh = countByCategoryObjects($productObjects, 3);
 
-$soPhanTu = count($productObjects);
-for ($i = 0; $i < $soPhanTu; $i++) {
-    $tien = $productObjects[$i]->lineTotal();
-    if ($productObjects[$i]->categoryId == 1) {
-        $tongBanPhim = $tongBanPhim + $tien;
-    } elseif ($productObjects[$i]->categoryId == 2) {
-        $tongChuot = $tongChuot + $tien;
-    } elseif ($productObjects[$i]->categoryId == 3) {
-        $tongManHinh = $tongManHinh + $tien;
-    }
-}
+$tongBanPhim = sumValueByCategoryObjects($productObjects, 1);
+$tongChuot = sumValueByCategoryObjects($productObjects, 2);
+$tongManHinh = sumValueByCategoryObjects($productObjects, 3);
 
 $orders = $_SESSION['orders'] ?? array();
 
