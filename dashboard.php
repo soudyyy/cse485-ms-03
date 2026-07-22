@@ -47,13 +47,16 @@ $tongKho = inventoryValueFromObjects($productObjects);
 $hangKho = rankInventory($tongKho);
 
 // Tinh tong gia tri tung danh muc xuat bao cao (dung ham dung chung o data.php, khong lap tay o view)
-$soLuongBanPhim = countByCategoryObjects($productObjects, 1);
-$soLuongChuot = countByCategoryObjects($productObjects, 2);
-$soLuongManHinh = countByCategoryObjects($productObjects, 3);
-
-$tongBanPhim = sumValueByCategoryObjects($productObjects, 1);
-$tongChuot = sumValueByCategoryObjects($productObjects, 2);
-$tongManHinh = sumValueByCategoryObjects($productObjects, 3);
+// Duyet theo $categoryObjects thay vi hardcode id 1/2/3: them/doi danh muc trong
+// data.php se tu dong cap nhat bao cao, khong phai sua tay o dashboard.php
+$baoCaoDanhMuc = array();
+foreach ($categoryObjects as $cat) {
+    $baoCaoDanhMuc[] = array(
+        'ten' => $cat->name,
+        'soLuong' => countByCategoryObjects($productObjects, $cat->id),
+        'tongGiaTri' => sumValueByCategoryObjects($productObjects, $cat->id),
+    );
+}
 
 $orders = $_SESSION['orders'] ?? array();
 
@@ -129,21 +132,13 @@ function renderProductRows(array $products, array $categoryMap): void {
         <th>So SP</th>
         <th>Tong gia tri</th>
     </tr>
+    <?php foreach ($baoCaoDanhMuc as $dong): ?>
     <tr>
-        <td>Ban phim</td>
-        <td><?php echo $soLuongBanPhim; ?></td>
-        <td><?php echo $tongBanPhim; ?></td>
+        <td><?php echo htmlspecialchars($dong['ten']); ?></td>
+        <td><?php echo $dong['soLuong']; ?></td>
+        <td><?php echo $dong['tongGiaTri']; ?></td>
     </tr>
-    <tr>
-        <td>Chuot</td>
-        <td><?php echo $soLuongChuot; ?></td>
-        <td><?php echo $tongChuot; ?></td>
-    </tr>
-    <tr>
-        <td>Man hinh</td>
-        <td><?php echo $soLuongManHinh; ?></td>
-        <td><?php echo $tongManHinh; ?></td>
-    </tr>
+    <?php endforeach; ?>
 </table>
 
 <h3>Dat hang thu</h3>

@@ -59,7 +59,7 @@ function filterByCategoryObjects(array $products, ?int $categoryId): array {
     $ketQua = array();
     $soPhanTu = count($products);
     for ($i = 0; $i < $soPhanTu; $i++) {
-        if ($products[$i]->categoryId == $categoryId) {
+        if ($products[$i]->categoryId === $categoryId) {
             $ketQua[] = $products[$i];
         }
     }
@@ -71,7 +71,7 @@ function countByCategoryObjects(array $products, int $categoryId): int {
     $dem = 0;
     $soPhanTu = count($products);
     for ($i = 0; $i < $soPhanTu; $i++) {
-        if ($products[$i]->categoryId == $categoryId) {
+        if ($products[$i]->categoryId === $categoryId) {
             $dem = $dem + 1;
         }
     }
@@ -83,7 +83,7 @@ function sumValueByCategoryObjects(array $products, int $categoryId): int {
     $tong = 0;
     $soPhanTu = count($products);
     for ($i = 0; $i < $soPhanTu; $i++) {
-        if ($products[$i]->categoryId == $categoryId) {
+        if ($products[$i]->categoryId === $categoryId) {
             $tong = $tong + $products[$i]->lineTotal();
         }
     }
